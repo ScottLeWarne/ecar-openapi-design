@@ -1,0 +1,481 @@
+openapi: '3.0.2'
+info:
+  title: Claim Manager Management Api
+  version: '1.0'
+servers:
+  - url: https://ec-d-cus-clm-man-app.azurewebsites.net/
+    description: DEV
+paths:
+  /locations:
+    get:
+      tags:
+      - Location
+      summary: 'Gets a list of Locations'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+  /locations/{locationId}:
+    parameters:
+      - name: locationId
+        in: path
+        description: The identifier of the Location
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+      - Location
+      summary: 'Gets a Location'
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+      - Location
+      summary: 'Creates a Location'
+      responses:
+        '200':
+          description: Success
+    put:
+      tags:
+      - Location
+      summary: 'Updates a Location'
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+      - Location
+      summary: 'Removes a Location'
+      responses:
+        '200':
+          description: OK
+  /projects:
+    get:
+      tags:
+        - Project
+      summary: 'Gets Projects'
+      parameters:
+        - name: Name
+          in: query 
+          schema:
+            type: string
+        - name: Page 
+          in: query
+          schema:
+            type: integer
+        - name: Size 
+          in: query
+          schema:
+            type: integer
+        - name: Sort
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /templates:
+    get:
+      tags:
+        - Template
+      summary: 'Gets Templates'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+  /templates/{templateId}:
+    parameters:
+      - name: templateId
+        in: path
+        description: The identifier of the Template
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Template
+      summary: Gets a Template
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Template
+      summary: 'Creates a Template'
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - Template
+      summary: 'Updates a Template'
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Template
+      summary: 'Removes a Template'
+      responses:
+        '200':
+          description: OK
+  /projects/{projectId}:
+    parameters:
+      - name: projectId
+        in: path
+        description: The unique identifier for the project
+        required: true
+        schema:
+          type: integer
+    get:
+      tags:
+        - Project
+      summary: Gets a Project
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Project
+      summary: 'Creates a Project'
+      requestBody:
+        description: The application data used to create a new project
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateProjectRequest"
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - Project
+      summary: 'Updates a Project'
+      requestBody:
+        description: The application data used to create a new project
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateProjectRequest"
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Project
+      summary: 'Removes a Project'
+      parameters:
+        - name: force
+          in: query
+          description: Optional parameter to remove all related entities
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: OK  
+  /projects/{projectId}/compare:
+    parameters:
+      - name: projectId
+        in: path
+        description: The identifier of the Project
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Project
+      summary: 'Compares two revisions of a project and returns a delta object'
+      parameters:
+      - name: LeftRevision
+        in: query
+        required: true
+        schema:
+          type: integer
+      - name: RightRevision
+        in: query
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+  /projects/{projectId}/revisions:
+    parameters:
+      - name: projectId
+        in: path
+        description: The identifier of the Project
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Project
+      summary: Gets all Revisions of a Project
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Project
+      summary: 'Create a new Revision of a Project'
+      requestBody:
+       description: The application data used to create a new project revision
+       content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateRevisionRequest"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateRevisionRequest"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateRevisionRequest"
+      responses:
+        '200':
+          description: OK 
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateRevisionResponse"
+  /project/{projectId}/revisions/{revision}:
+    parameters:
+      - name: projectId
+        in: path
+        description: The identifier of the Project
+        required: true
+        schema:
+          type: string
+      - name: revision
+        in: path
+        description: The revision number
+        required: true
+        schema:
+          type: integer
+    get:
+      tags:
+      - Project
+      summary: 'Gets a specific Revision of a Project'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - Project
+      summary: 'Delete a Revision of a Project'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+        '409':
+          description: Revision currently deployed  
+  /projects/{projectId}/databases:
+    parameters:
+      - name: projectId
+        in: path
+        description: The identifier of the Project
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+      - Project
+      summary: 'Gets a list Databases for a Project'
+      parameters:
+      - name: ProjectRevision
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: TemplateRevision
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: Status
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: Page
+        in: query
+        schema:
+          type: integer
+      - name: Size 
+        in: query
+        schema:
+          type: integer
+      - name: Sort
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+      - Project
+      summary: Creates a new Database for a Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateDatabaseRequest"
+      responses:
+        '200':
+          description: OK
+  /projects/{projectId}/databases/{databaseId}:
+    parameters:
+      - name: projectId
+        in: path
+        description: The identifier of the Project
+        required: true
+        schema:
+          type: string
+      - name: databaseId
+        in: path
+        description: The identifier of the Database
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+      - Project
+      summary: Gets a specific Database for a Project
+      parameters: []
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+    put:
+      tags:
+      - Project
+      summary: Updates a Database for a Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.UpdateDatabaseRequest"
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+        '409':
+          description: Database not currently updateable
+    delete:
+      tags:
+      - Project
+      summary: Deletes a Database for a Project
+      parameters: []
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+        '409':
+          description: Database in active state
+  /projects/{projectId}/databases/{databaseId}/Action:
+    parameters:
+      - name: projectId
+        in: path
+        description: The identifier of the Project
+        required: true
+        schema:
+          type: string
+      - name: databaseId
+        in: path
+        description: The identifier of the Database
+        required: true
+        schema:
+          type: string
+    post:  
+      tags:
+      - Project
+      summary: Initiates actions against a Database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.DatabaseActionRequest"
+      responses:
+        '200':
+          description: OK 
+        '404':
+          description: Not Found
+components:
+  schemas:
+    ECAR.ClaimManager.Api.Data.Models.CreateProjectRequest:
+      type: object
+      properties:
+        identifier:
+          type: string
+          nullable: false
+        name:
+          type: string
+          nullable: false
+        location:
+          type: string
+          nullable: false
+        templateName:
+          type: string
+          nullable: true
+        isTemplate:
+          type: boolean
+          nullable: true
+    ECAR.ClaimManager.Api.Data.Models.CreateRevisionRequest:
+      type: object
+      properties:
+        projectId:
+          type: integer
+          nullable: false
+        projectData:
+          type: string
+          nullable: false
+    ECAR.ClaimManager.Api.Data.Models.CreateRevisionResponse:
+      type: object
+      properties:
+        projectId:
+          type: integer
+        newRevisionNumber:
+          type: integer
+    ECAR.ClaimManager.Api.Data.Models.CreateDatabaseRequest:
+      type: object
+      properties:
+        projectId:
+          type: integer
+        projectRevision:
+          type: integer
+        templateRevision:
+          type: integer
+    ECAR.ClaimManager.Api.Data.Models.UpdateDatabaseRequest:
+      type: object
+      properties:
+        targetProjectRevision:
+          type: integer
+        targetTemplateRevision:
+          type: integer
+    ECAR.ClaimManager.Api.Data.Models.DatabaseActionRequest:
+      type: object
+      properties:
+        action: 
+          type: string
+          enum:
+            - Take Offline
+            - Bring Online 
+            - Backup
+            - Restore
+        restorePoint:
+          type: string
+        
+
+
+
+        
+        

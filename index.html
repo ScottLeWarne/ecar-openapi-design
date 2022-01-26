@@ -39,7 +39,9 @@
     window.onload = function() {
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
-        url: "swagger.yaml",
+        urls: [
+          {name: "Claim Manager Mgmt Api", url: "ClaimManagerMgmtApi.yaml"}
+        ],
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [
