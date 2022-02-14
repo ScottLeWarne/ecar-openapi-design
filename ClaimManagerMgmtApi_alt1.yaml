@@ -1,6 +1,6 @@
 openapi: '3.0.2'
 info:
-  title: Claim Manager Management Api
+  title: Claim Manager Management Api - Alternate 1
   version: '1.0'
 servers:
   - url: https://ec-d-cus-clm-man-app.azurewebsites.net/
@@ -120,14 +120,14 @@ paths:
        content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateRevisionRequest"
+              "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateProjectDataRequest"
       responses:
         '200':
           description: OK 
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateRevisionResponse"             
+                "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateProjectDataResponse"             
   /template/{templateId}/revisions/{revision}:
     parameters:
       - name: templateId
@@ -283,7 +283,7 @@ paths:
       responses:
         '200':
           description: OK
-  /projects/{projectId}/revisions:
+  /projects/{projectId}/data:
     parameters:
       - name: projectId
         in: path
@@ -294,28 +294,28 @@ paths:
     get:
       tags:
         - Project
-      summary: Gets all Revisions of a Project
+      summary: Gets all project data revisions for a Project
       responses:
         '200':
           description: OK
     post:
       tags:
         - Project
-      summary: 'Create a new Revision of a Project'
+      summary: 'Create a new revision of data for a Project'
       requestBody:
-       description: The application data used to create a new project revision
+       description: The application data used to create a new project data revision
        content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateRevisionRequest"
+              "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateProjectDataRequest"
       responses:
         '200':
           description: OK 
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateRevisionResponse"             
-  /project/{projectId}/revisions/{revision}:
+                "$ref": "#/components/schemas/ECAR.ClaimManager.Api.Data.Models.CreateProjectDataResponse"             
+  /project/{projectId}/data/{revision}:
     parameters:
       - name: projectId
         in: path
@@ -332,7 +332,7 @@ paths:
     get:
       tags:
       - Project
-      summary: 'Gets a specific Revision of a Project'
+      summary: Gets a specific revision of project data
       responses:
         '200':
           description: OK
@@ -341,7 +341,7 @@ paths:
     put:   
       tags:
         - Project
-      summary: 'Update a Revision of a Project'
+      summary: 'Update a revision of project data'
       requestBody:
        description: The application data used to update a project revision
        content:
@@ -356,7 +356,7 @@ paths:
     delete:
       tags:
         - Project
-      summary: 'Delete a Revision of a Project'
+      summary: 'Delete a specific revision of project data'
       responses:
         '200':
           description: OK
@@ -364,6 +364,7 @@ paths:
           description: Not Found
         '409':
           description: Revision currently deployed  
+
   /projects/{projectId}/databases:
     parameters:
       - name: projectId
@@ -501,6 +502,27 @@ paths:
           description: Not Found
 components:
   schemas:
+    ECAR.ClaimManager.Api.Data.Entities.ProjectData:
+      type: object
+      properties:
+        projectId:
+          type: integer
+          nullable: false
+        revision:
+          type: integer
+          nullable: false
+        value:
+          type: string
+          nullable: false
+        createScript:
+          type: string
+          nullable: false
+        updateScript:
+          type: string
+          nullable: false
+        updateSummary:
+          type: string
+          nullable: false
     ECAR.ClaimManager.Api.Data.Models.CreateProjectRequest:
       type: object
       properties:
@@ -519,13 +541,13 @@ components:
         isTemplate:
           type: boolean
           nullable: true
-    ECAR.ClaimManager.Api.Data.Models.CreateRevisionRequest:
+    ECAR.ClaimManager.Api.Data.Models.CreateProjectDataRequest:
       type: object
       properties:
         projectId:
           type: integer
           nullable: false
-        projectData:
+        projectDataValue:
           type: string
           nullable: false
     ECAR.ClaimManager.Api.Data.Models.UpdateRevisionRequest:
@@ -537,7 +559,7 @@ components:
         projectData:
           type: string
           nullable: false
-    ECAR.ClaimManager.Api.Data.Models.CreateRevisionResponse:
+    ECAR.ClaimManager.Api.Data.Models.CreateProjectDataResponse:
       type: object
       properties:
         projectId:
