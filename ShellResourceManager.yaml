@@ -1,0 +1,205 @@
+openapi: '3.0.2'
+info:
+  title: Shell Resource Manager
+  version: '1.0'
+servers:
+  - url: https://localhost
+    description: DEV
+paths:
+  /modules:
+    get:
+      tags:
+      - Modules 
+      summary: 'Get all deployed modules for all environments'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"     
+  /modules/register:
+    post: 
+      tags:
+        - Modules
+      summary: 'Register a deployed module/environment combination.  Called by release pipelines.'
+      requestBody:
+        description: Environment details
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ShellResourceManager.Data.Models.RegisterDirectoryRequest"
+      responses:
+        '200':
+          description: OK
+  /modules/{moduleName}:
+    get:
+      tags: 
+      - Modules
+      summary: 'Get all deployed module instances for a given module name'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
+        '404':
+          description: Not Found
+  /modules/{moduleName}/environments:
+    get:
+      tags: 
+      - Modules
+      summary: 'Get the unique list of environments a given module is deployed to'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
+        '404':
+          description: Not Found
+  /modules/{moduleName}/environments/{environmentName}:
+    get:
+      tags: 
+      - Modules
+      summary: 'Get a deployed instance for a module and environment'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
+        '404':
+          description: Not Found
+  /apis:
+    get:
+      tags:
+      - Apis 
+      summary: 'Get all deployed api''s for all environments'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
+  /apis/register:
+    post: 
+      tags:
+        - Apis
+      summary: 'Register a deployed api/environment combination.  Called by release pipelines.'
+      requestBody:
+        description: Environment details
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ShellResourceManager.Data.Models.RegisterDirectoryRequest"
+      responses:
+        '200':
+          description: OK
+  /apis/{apiName}:
+    get:
+      tags: 
+      - Apis
+      summary: 'Get all deployed instances of a given api name'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
+        '404':
+          description: Not Found
+  /apis/{apiName}/environments:
+    get:
+      tags: 
+      - Apis
+      summary: 'Get the unique list of environments a given api is deployed to'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
+        '404':
+          description: Not Found
+  /apis/{apiName}/environments/{environmentName}:
+    get:
+      tags: 
+      - Apis
+      summary: 'Get a deployed instance of an api and environment'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
+        '404':
+          description: Not Found
+  /templates:
+    put: 
+      tags:
+        - Templates
+      summary: 'Create one or more entities, as defined in the required SRM Template'
+      responses:
+        '200':
+          description: OK
+    patch:
+      tags:
+        - Templates
+      summary: 'Update one or more entities, as defined in the required SRM Template'
+      responses:
+        '200':
+          description: OK
+    post: 
+      tags:
+        - Templates
+      summary: 'Performs some action, such as a deployment, as defined in the required SRM Template'
+      responses:
+        '200':
+          description: OK 
+components:
+  schemas:
+    ShellResourceManager.Data.Models.RegisterDirectoryRequest:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          nullable: false
+        resourceName:
+          type: string
+          nullable: false
+        envrironmentName:
+          type: string
+          nullable: false
+        url:
+          type: string
+          nullable: false
+    ShellResourceManager.Data.Models.DirectoryResponse:
+      type: object
+      properties:
+        resourceName:
+          type: string
+          nullable: true
+        environmentName:
+          type: string
+          nullable: true
+        url:
+          type: string
+          nullable: true
+        
+    
