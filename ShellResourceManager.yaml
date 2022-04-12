@@ -5,20 +5,7 @@ info:
 servers:
   - url: https://localhost
     description: DEV
-paths:
-  /modules:
-    get:
-      tags:
-      - Modules 
-      summary: 'Get all deployed modules for all environments'
-      parameters: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema: 
-                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"     
+paths:    
   /modules/register:
     post: 
       tags:
@@ -33,64 +20,6 @@ paths:
       responses:
         '200':
           description: OK
-  /modules/{moduleName}:
-    get:
-      tags: 
-      - Modules
-      summary: 'Get all deployed module instances for a given module name'
-      parameters: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema: 
-                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
-        '404':
-          description: Not Found
-  /modules/{moduleName}/environments:
-    get:
-      tags: 
-      - Modules
-      summary: 'Get the unique list of environments a given module is deployed to'
-      parameters: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema: 
-                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
-        '404':
-          description: Not Found
-  /modules/{moduleName}/environments/{environmentName}:
-    get:
-      tags: 
-      - Modules
-      summary: 'Get a deployed instance for a module and environment'
-      parameters: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema: 
-                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
-        '404':
-          description: Not Found
-  /apis:
-    get:
-      tags:
-      - Apis 
-      summary: 'Get all deployed api''s for all environments'
-      parameters: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema: 
-                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
   /apis/register:
     post: 
       tags:
@@ -105,70 +34,43 @@ paths:
       responses:
         '200':
           description: OK
-  /apis/{apiName}:
-    get:
-      tags: 
-      - Apis
-      summary: 'Get all deployed instances of a given api name'
-      parameters: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema: 
-                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
-        '404':
-          description: Not Found
-  /apis/{apiName}/environments:
-    get:
-      tags: 
-      - Apis
-      summary: 'Get the unique list of environments a given api is deployed to'
-      parameters: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema: 
-                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
-        '404':
-          description: Not Found
-  /apis/{apiName}/environments/{environmentName}:
-    get:
-      tags: 
-      - Apis
-      summary: 'Get a deployed instance of an api and environment'
-      parameters: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema: 
-                "$ref": "#/components/schemas/ShellResourceManager.Data.Models.DirectoryResponse"
-        '404':
-          description: Not Found
-  /templates:
+  /template:
     put: 
       tags:
-        - Templates
+        - Template
       summary: 'Create one or more entities, as defined in the required SRM Template'
+      requestBody:
+        description: Environment details
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ShellResourceManager.Data.Models.TemplateRequest"
       responses:
         '200':
           description: OK
     patch:
       tags:
-        - Templates
+        - Template
       summary: 'Update one or more entities, as defined in the required SRM Template'
+      requestBody:
+        description: Environment details
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ShellResourceManager.Data.Models.TemplateRequest"
       responses:
         '200':
           description: OK
     post: 
       tags:
-        - Templates
+        - Template
       summary: 'Performs some action, such as a deployment, as defined in the required SRM Template'
+      requestBody:
+        description: Environment details
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ShellResourceManager.Data.Models.TemplateRequest"
       responses:
         '200':
           description: OK 
@@ -189,17 +91,11 @@ components:
         url:
           type: string
           nullable: false
-    ShellResourceManager.Data.Models.DirectoryResponse:
+    ShellResourceManager.Data.Models.TemplateRequest:
       type: object
       properties:
-        resourceName:
+        template: 
           type: string
-          nullable: true
-        environmentName:
-          type: string
-          nullable: true
-        url:
-          type: string
-          nullable: true
+          nullable: false
         
     
