@@ -1,0 +1,101 @@
+openapi: '3.0.2'
+info:
+  title: Shell Resource Manager
+  version: '1.1'
+servers:
+  - url: https://localhost
+    description: DEV
+paths:    
+  /modules/register:
+    post: 
+      tags:
+        - Modules
+      summary: 'Register a deployed module/environment combination.  Called by release pipelines.'
+      requestBody:
+        description: Environment details
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ShellResourceManager.Data.Models.RegisterDirectoryRequest"
+      responses:
+        '200':
+          description: OK
+  /apis/register:
+    post: 
+      tags:
+        - Apis
+      summary: 'Register a deployed api/environment combination.  Called by release pipelines.'
+      requestBody:
+        description: Environment details
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ShellResourceManager.Data.Models.RegisterDirectoryRequest"
+      responses:
+        '200':
+          description: OK
+  /template:
+    put: 
+      tags:
+        - Template
+      summary: 'Create one or more entities, as defined in the required SRM Template'
+      requestBody:
+        description: Environment details
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ShellResourceManager.Data.Models.TemplateRequest"
+      responses:
+        '200':
+          description: OK
+    patch:
+      tags:
+        - Template
+      summary: 'Update one or more entities, as defined in the required SRM Template'
+      requestBody:
+        description: Environment details
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ShellResourceManager.Data.Models.TemplateRequest"
+      responses:
+        '200':
+          description: OK
+    post: 
+      tags:
+        - Template
+      summary: 'Performs some action, such as a deployment, as defined in the required SRM Template'
+      requestBody:
+        description: Environment details
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ShellResourceManager.Data.Models.TemplateRequest"
+      responses:
+        '200':
+          description: OK 
+components:
+  schemas:
+    ShellResourceManager.Data.Models.RegisterDirectoryRequest:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          nullable: false
+        resourceName:
+          type: string
+          nullable: false
+        envrironmentName:
+          type: string
+          nullable: false
+        url:
+          type: string
+          nullable: false
+    ShellResourceManager.Data.Models.TemplateRequest:
+      type: object
+      properties:
+        template: 
+          type: string
+          nullable: false
+        
+    
