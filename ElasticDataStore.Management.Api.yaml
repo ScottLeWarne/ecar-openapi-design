@@ -437,6 +437,24 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.EnvironmentData'
+  /environments/compare:
+    post:
+      tags:
+      - Environment
+      summary: Compare the merged output of two Environments
+      x-cm.securable: EDS/ENVIRONMENTDATA/REA
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.EnvironmentCompareRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectCompareResult"
 components:
   schemas:
     ECAR.ElasticDataStore.Management.Api.Data.ProjectListResult:
@@ -656,7 +674,13 @@ components:
         project: 
           type: object
           $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectListResult'
-        
+    ECAR.ElasticDataStore.Management.Api.Data.EnvironmentCompareRequest:
+      type: object
+      properties:
+        environment1Id:
+          type: integer
+        environment2Id:
+          type: integer  
     ECAR.ElasticDataStore.Management.Api.Data.CreateEnvironmentRequest:
       type: object
       properties:
