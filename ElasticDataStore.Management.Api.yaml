@@ -653,12 +653,6 @@ components:
       properties:
         environmentId:
           type: integer
-        name:
-          type: string
-        status: 
-          type: string
-        isProd: 
-          type: boolean
         projectRev: 
           type: integer
         templateRev:
@@ -671,9 +665,6 @@ components:
           type: string
         updateSummary: 
           type: string
-        project: 
-          type: object
-          $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectListResult'
     ECAR.ElasticDataStore.Management.Api.Data.EnvironmentCompareRequest:
       type: object
       properties:
@@ -705,10 +696,5 @@ components:
           type: integer
         templateRev: 
           type: integer
-  securitySchemes:
-    configManager: 
-      type: openIdConnect
-      openIdConnectUrl: https://api.ec.epiqglobal.com/cm/.well-known/openid-configuration
-      
 
       
