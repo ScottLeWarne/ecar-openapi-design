@@ -85,7 +85,7 @@ components:
         resourceName:
           type: string
           nullable: false
-        envrironmentName:
+        environmentName:
           type: string
           nullable: false
         url:

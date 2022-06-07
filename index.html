@@ -20,8 +20,7 @@
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
         urls: [
-          {name: "Claim Manager Mgmt Api", url: "ClaimManagerMgmtApi.yaml"},
-          {name: "Shell Resource Manager", url: "ShellResourceManager.yaml"}
+          {name: "Elastic Data Store Management Api", url: "ElasticDataStore.Management.Api.yaml"}
         ],
         dom_id: '#swagger-ui',
         deepLinking: true,
@@ -32,7 +31,8 @@
         plugins: [
           SwaggerUIBundle.plugins.DownloadUrl
         ],
-        layout: "StandaloneLayout"
+        layout: "StandaloneLayout",
+        showExtensions: true
       });
       // End Swagger UI call region
 

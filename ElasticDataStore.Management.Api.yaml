@@ -1,0 +1,659 @@
+openapi: '3.0.2'
+info:
+  title: Elastic Data Store Management Api - Design
+  version: '1.0'
+servers:
+  - url: https://ec-d-cus-eds-mgt-app.azurewebsites.net/
+    description: DEV
+paths:
+  /locations:
+    get:
+      tags:
+      - Location
+      parameters:
+        - name: isActiveFilter
+          in: query
+          required: false
+          schema: 
+            type: string
+      x-secureable: EDS/LOCATIONS/REA   
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.Location'
+    post:
+      tags:
+      - Location
+      x-securable: EDS/LOCATIONS/CRE
+      responses:
+        '200':
+          description: Success
+  /locations/{locationId}:
+    parameters:
+      - name: locationId
+        in: path
+        description: The identifier of the Location
+        required: true
+        schema:
+          type: integer
+    get:
+      tags:
+      - Location
+      x-securable: EDS/LOCATIONS/REA
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.Location'
+    put:
+      tags:
+      - Location
+      x-securable: EDS/LOCATIONS/UPD
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+      - Location
+      x-securable: EDS/LOCATIONS/DEL
+      responses:
+        '200':
+          description: OK
+  /projects:
+    get:
+      tags:
+      - Project
+      summary: Gets a list of Projects, typically for use in a grid 
+      x-secureable: EDS/PROJECTS/REA
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectListResult'
+    post: 
+      tags:
+      - Project
+      summary: Creates a Project
+      x-secureable: EDS/PROJECTS/CRE
+      responses:
+        '200':
+          description: OK
+  /projects/{projectId}: 
+    parameters:
+      - name: projectId
+        in: path
+        description: Identifier of the project
+        required: true
+        schema: 
+          type: integer
+    get:
+      tags:
+      - Project
+      summary: Gets a Project
+      x-secureable: EDS/PROJECTS/REA
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.Project'
+    put:
+      tags:
+      - Project
+      summary: Updates a Project (excluding ProjectData)
+      x-secureable: EDS/PROJECTS/UPD
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+      - Project
+      summary: Deletes a Project (includes ProjectData)
+      x-secureable: EDS/PROJECTS/DEL
+      responses:
+        '200':
+          description: OK
+  /projects/{projectId}/data:
+    parameters:
+      - name: projectId
+        in: path
+        description: Identifier of the project
+        required: true
+        schema: 
+          type: integer 
+    get:
+      tags: 
+      - Project
+      summary: Gets a list of ProjectData's (revisions) for a Project.
+      x-secureable: EDS/PROJECTREVISIONS/REA
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectData'
+  /projects/{projectId}/data/{revisionNumber}: 
+    parameters:
+      - name: projectId
+        in: path
+        description: Identifier of the project
+        required: true
+        schema: 
+          type: integer
+      - name: revisionNumber
+        in: path
+        description: Revision number to retrieve
+        required: true
+        schema: 
+          type: integer
+    get:
+      tags:
+      - Project
+      summary: Gets a ProjectData of a specific revision for a Project.
+      x-secureable: EDS/PROJECTDATA/REA
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectData'
+    put: 
+      tags:
+      - Project
+      summary: Update an existing Project revision
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.UpdateProjectData'
+      x-secureable: EDS/PROJECTDATA/UPD
+      responses:
+        '200':
+          description: OK
+  /projects/{projectId}/compare:
+    parameters:
+      - name: projectId
+        in: path
+        description: Identifier of the project
+        required: true
+        schema: 
+          type: integer
+    post:
+      tags:
+      - Project
+      summary: Compares two project data revisions
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectCompareRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectCompareResult'
+  /templates:
+    get:
+      tags:
+      - Template
+      summary: Gets a list of templates, typically for use in a grid 
+      x-secureable: EDS/TEMPLATES/REA
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectListResult'
+    post: 
+      tags:
+      - Template
+      summary: Creates a Template
+      x-secureable: EDS/TEMPLATES/CRE
+      responses:
+        '200':
+          description: OK
+  /templates/{projectId}: 
+    parameters:
+      - name: projectId
+        in: path
+        description: Identifier of the project
+        required: true
+        schema: 
+          type: integer
+    get:
+      tags:
+      - Template
+      summary: Gets a Template
+      x-secureable: EDS/TEMPLATES/REA
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.Template'
+    put:
+      tags:
+      - Template
+      summary: Updates a Template (excluding ProjectData)
+      x-secureable: EDS/TEMPLATES/UPD
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+      - Template
+      summary: Deletes a Template (includes ProjectData)
+      x-secureable: EDS/TEMPLATES/DEL
+      responses:
+        '200':
+          description: OK
+  /templates/{projectId}/data:
+    parameters:
+      - name: projectId
+        in: path
+        description: Identifier of the project
+        required: true
+        schema: 
+          type: integer 
+    get:
+      tags: 
+      - Template
+      summary: Gets a list of ProjectData's (revisions) for a Template.
+      x-secureable: EDS/TEMPLATEDATA/REA
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectData'
+  /templates/{projectId}/data/{revisionNumber}: 
+    parameters:
+      - name: projectId
+        in: path
+        description: Identifier of the project
+        required: true
+        schema: 
+          type: integer
+      - name: revisionNumber
+        in: path
+        description: Revision number to retrieve
+        required: true
+        schema: 
+          type: integer
+    get:
+      tags:
+      - Template
+      summary: Gets a ProjectData of a specific revision for a Template.
+      x-secureable: EDS/TEMPLATEDATA/REA
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectData'
+    put: 
+      tags:
+      - Template
+      summary: Update an existing Template revision
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.UpdateProjectData'
+      x-secureable: EDS/TEMPLATEDATA/UPD
+      responses:
+        '200':
+          description: OK
+  /templates/{template}/compare:
+    parameters:
+      - name: template
+        in: path
+        description: Identifier of the template
+        required: true
+        schema: 
+          type: integer
+    post:
+      tags:
+      - Template
+      summary: Compares two template data revisions
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectCompareRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectCompareResult'
+  /environments: 
+    get:
+      tags:
+      - Environment 
+      summary: Gets a list of Environments 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.EnvironmentListResult'
+    post: 
+      tags:
+      - Environment
+      summary: Create an Environment (deploy a Project)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.CreateEnvironmentRequest'
+      responses:
+        '200':
+          description: OK
+  /environments/{environmentId}: 
+    parameters:
+      - name: environmentId
+        in: path
+        description: Identifier for the Environment
+        required: true
+        schema: 
+          type: integer
+    get:
+      tags:
+      - Environment
+      summary: Gets an Environment by id.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.Environment'
+  /environments/{environmentId}/data: 
+    parameters:
+      - name: environmentId
+        in: path
+        description: Identifier for the Environment
+        required: true
+        schema: 
+          type: integer
+    get:
+      tags:
+      - Environment
+      summary: Get the merged Json data and scripts for this Environment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.EnvironmentData'
+components:
+  schemas:
+    ECAR.ElasticDataStore.Management.Api.Data.ProjectListResult:
+      type: object
+      properties:
+        projectId:
+          type: integer
+          nullable: false
+        name:
+          type: string
+          nullable: false
+        isActive:
+          type: boolean
+          nullable: false
+        template: 
+          $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.TemplateListResult'
+        location:
+          $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.Location'
+    ECAR.ElasticDataStore.Management.Api.Data.ProjectDifference:
+      type: object
+      properties:
+        leftName: 
+          type: string
+        rightName:
+          type: string
+        rightValue:
+          type: string
+        leftValue:
+          type: string
+    ECAR.ElasticDataStore.Management.Api.Data.ProjectCompareRequest:
+      type: object
+      properties:
+        rev1:
+          type: integer
+        rev2:
+          type: integer
+    ECAR.ElasticDataStore.Management.Api.Data.ProjectCompareResult:
+      type: object
+      properties:
+        differences:
+          type: array
+          items:
+            $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectDifference'
+        summary:
+          type: string
+    ECAR.ElasticDataStore.Management.Api.Data.Project:
+      type: object
+      properties:
+        projectId:
+          type: integer
+          nullable: false
+        name:
+          type: string
+          nullable: false
+        templateId:
+          type: integer
+          nullable: false
+        isActive:
+          type: boolean
+          nullable: false
+        locationId: 
+          type: integer
+          nullable: false
+        revisions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectData'
+    ECAR.ElasticDataStore.Management.Api.Data.TemplateListResult:
+      type: object
+      properties:
+        templateId:
+          type: integer
+          nullable: false
+        name:
+          type: string
+          nullable: false
+        isActive:
+          type: boolean
+          nullable: false
+    ECAR.ElasticDataStore.Management.Api.Data.Template:
+      type: object
+      properties:
+        templateId:
+          type: integer
+          nullable: false
+        name:
+          type: string
+          nullable: false
+        isActive:
+          type: boolean
+          nullable: false
+        revisions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectData'    
+    ECAR.ElasticDataStore.Management.Api.Data.ProjectData:
+      type: object
+      properties:
+        projectId:
+          type: integer
+          nullable: false
+        revision:
+          type: integer
+          nullable: false
+        value:
+          type: string
+          nullable: false
+        createScript:
+          type: string
+          nullable: false
+        updateScript:
+          type: string
+          nullable: false
+        updateSummary:
+          type: string
+          nullable: false
+    ECAR.ElasticDataStore.Management.Api.Data.Location:
+      type: object
+      properties:
+        locationId:
+          type: integer
+          nullable: false
+        name:
+          type: string
+          nullable: false
+        isActive:
+          type: boolean
+          nullable: false
+        isAzure:
+          type: boolean
+          nullable: false
+        sqlServer:
+          type: string
+          nullable: false
+        webServer:
+          type: string
+          nullable: false
+        sqlServerDev:
+          type: string
+          nullable: false
+        webServerDev:
+          type: string
+          nullable: false
+        assemblyBlobKey:
+          type: string
+          nullable: false
+        countryCode:
+          type: string
+          nullable: false
+    ECAR.ElasticDataStore.Management.Api.Data.UpdateProjectData:
+      type: object
+      properties:
+        projectId:
+          type: integer
+        revision:
+          type: integer
+        value: 
+          type: string
+    ECAR.ElasticDataStore.Management.Api.Data.EnvironmentListResult:
+      type: object
+      properties:
+        environmentId:
+          type: integer
+        name:
+          type: string
+        status: 
+          type: string
+        isProd: 
+          type: boolean
+        projectRev: 
+          type: integer
+        templateRev:
+          type: integer
+        project: 
+          type: object
+          $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectListResult'
+    ECAR.ElasticDataStore.Management.Api.Data.Environment:
+      type: object
+      properties:
+        environmentId:
+          type: integer
+        name:
+          type: string
+        projectId:
+          type: integer
+        status: 
+          type: string
+        isProd: 
+          type: boolean
+        projectRev: 
+          type: integer
+        templateRev:
+          type: integer
+    ECAR.ElasticDataStore.Management.Api.Data.EnvironmentData:
+      type: object
+      properties:
+        environmentId:
+          type: integer
+        name:
+          type: string
+        status: 
+          type: string
+        isProd: 
+          type: boolean
+        projectRev: 
+          type: integer
+        templateRev:
+          type: integer
+        project: 
+          type: object
+          $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectListResult'
+        value:
+          type: string
+        sqlUpdateScript:
+          type: string
+        sqlCreateScript:
+          type: string
+        updateSummary: 
+          type: string
+    ECAR.ElasticDataStore.Management.Api.Data.CreateEnvironmentRequest:
+      type: object
+      properties:
+        projectId: 
+          type: integer
+        name:
+          type: string
+        projectRev:
+          type: integer
+        templateRev: 
+          type: integer
+        isProd:
+          type: boolean
+  securitySchemes:
+    configManager: 
+      type: openIdConnect
+      openIdConnectUrl: https://api.ec.epiqglobal.com/cm/.well-known/openid-configuration
+      
+
+      
