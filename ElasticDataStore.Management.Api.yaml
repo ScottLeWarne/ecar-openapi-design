@@ -645,9 +645,6 @@ components:
           type: integer
         templateRev:
           type: integer
-        project: 
-          type: object
-          $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectListResult'
         value:
           type: string
         sqlUpdateScript:
@@ -656,6 +653,10 @@ components:
           type: string
         updateSummary: 
           type: string
+        project: 
+          type: object
+          $ref: '#/components/schemas/ECAR.ElasticDataStore.Management.Api.Data.ProjectListResult'
+        
     ECAR.ElasticDataStore.Management.Api.Data.CreateEnvironmentRequest:
       type: object
       properties:
